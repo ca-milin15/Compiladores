@@ -5,6 +5,9 @@
  */
 package practicacompiladores;
 
+import java.awt.Color;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
 import static java.time.Clock.system;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,9 +37,22 @@ public class VentanaInicial extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaAutomata = new javax.swing.JTable();
         iniciarProceso = new javax.swing.JButton();
+        grafica1 = new javax.swing.JPanel();
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -44,8 +60,8 @@ public class VentanaInicial extends javax.swing.JFrame {
             new Object [][] {
                 {"A", "A", "B", "0"},
                 {"B", "C", "D", "0"},
-                {"C", "F", "G", "1"},
-                {"D", "H", "I", "0"}
+                {"C", "A,B", "D", "1"},
+                {"D", "B", "C", "0"}
             },
             new String [] {
                 "Estados", "0", "1", "A(1)/R(0)"
@@ -69,27 +85,43 @@ public class VentanaInicial extends javax.swing.JFrame {
             }
         });
 
+        javax.swing.GroupLayout grafica1Layout = new javax.swing.GroupLayout(grafica1);
+        grafica1.setLayout(grafica1Layout);
+        grafica1Layout.setHorizontalGroup(
+            grafica1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        grafica1Layout.setVerticalGroup(
+            grafica1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 221, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(13, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(grafica1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
-                .addGap(149, 149, 149)
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 687, Short.MAX_VALUE)
+                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(iniciarProceso)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(321, 321, 321))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(60, 60, 60)
+                .addGap(22, 22, 22)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(26, 26, 26)
                 .addComponent(iniciarProceso)
-                .addContainerGap(100, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(grafica1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(64, Short.MAX_VALUE))
         );
 
         pack();
@@ -101,6 +133,7 @@ public class VentanaInicial extends javax.swing.JFrame {
             if(validarCamposTablaAcepRech()){
                 if(validarAutomataNoDeterminista()){
                     System.out.println("Es no determinista");
+                    generarGrafica(grafica1.getGraphics());
                 } else {
                     System.out.println("Este automata no es NO determinista");
                 }
@@ -110,6 +143,21 @@ public class VentanaInicial extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_iniciarProcesoActionPerformed
 
+    public void generarGrafica(Graphics graph){
+        List<String> estados = obtenerListaEstados();
+        for (int i = 1; i <= estados.size(); i++) {
+            if(i%2 == 0){
+                graph.drawOval(i * 10, i * 20, 40, 40);
+                graph.setColor(Color.red);
+                graph.drawString("a", 35, 35);
+            } else {
+                graph.drawOval(i * 20 , i* 10, 10, 10);
+                graph.setColor(Color.red);
+                graph.drawString("a", 35, 35);
+            }
+        }
+    }
+    
     public HashMap<Boolean, String> validarEstadosIngresados(){
         HashMap<Boolean, String> validador = new HashMap<>();
         List<String> listaEstados = obtenerListaEstados();
@@ -202,7 +250,9 @@ public class VentanaInicial extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel grafica1;
     private javax.swing.JButton iniciarProceso;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tablaAutomata;
     // End of variables declaration//GEN-END:variables
