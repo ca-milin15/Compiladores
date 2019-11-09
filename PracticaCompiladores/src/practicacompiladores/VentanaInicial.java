@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import javax.swing.JFrame;
+import practicacompiladores.bean.InfoEstado;
 
 
 /**
@@ -133,8 +134,14 @@ public class VentanaInicial extends javax.swing.JFrame {
         if(validadorEstados.containsKey(true)){
             if(validarCamposTablaAcepRech()){
                 if(validarAutomataNoDeterminista()){
-                    System.out.println("Es no determinista");
-                    generarGrafica(grafica1.getGraphics());
+                    List<InfoEstado> listaEstadosGenerados = generarGrafica(grafica1.getGraphics());
+                    listaEstadosGenerados.forEach(estadoGenerado -> {
+                        System.out.println("Estados generados graficamente: ".concat(estadoGenerado.getEstado())
+                                                                             .concat(". Posicion x: ")
+                                                                             .concat(String.valueOf(estadoGenerado.getCoordenadaX())
+                                                                             .concat(". Posicion y: ")
+                                                                             .concat(String.valueOf(estadoGenerado.getCoordenadaY()))));
+                    });
                 } else {
                     System.out.println("Este automata no es NO determinista");
                 }
@@ -144,16 +151,42 @@ public class VentanaInicial extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_iniciarProcesoActionPerformed
 
-    public void generarGrafica(Graphics graph){
+    public List<InfoEstado> generarGrafica(Graphics graph){
+        //Se obtiene la lista de estados
         List<String> estados = obtenerListaEstados();
+        List<InfoEstado> estadosInfo = new ArrayList<>();
         int posicionY = 70;
-        for (int i = 0; i <= estados.size(); i+=2) {
-            System.out.println("Posicion Y: " + posicionY);
+        //Se pintan los estados por orden ingresados y por par
+        for (int i = 0; i < estados.size(); i+=2) {
             generarOvalo(graph, 25, posicionY, estados.get(i));
+            /* Se registran las coordenadas de cada estado para saber su 
+               ubicacion en la grafica */
+            estadosInfo.add(new InfoEstado(25, posicionY, estados.get(i)));
             generarOvalo(graph, 125, posicionY, estados.get(i+1));
+            estadosInfo.add(new InfoEstado(125, posicionY, estados.get(i+1)));
             posicionY = posicionY * 2;
         }
-        
+        /* Se empieza a recorrer la tabla de estados ingresados para trazar 
+           las transiciones */
+        for(int fila = 0; fila <= 3; fila++){
+            for (int columna = 1; columna <= 2; columna++) {
+                String estadoIngresado = tablaAutomata.getValueAt(fila, columna).toString();
+                System.out.println(tablaAutomata.getValueAt(fila, columna));
+                estadosInfo.forEach(estadoLlegada -> {
+                    if(estadoLlegada.getEstado().equals(estadoIngresado)){
+                        generarFlecha(graph, 0, 0, estadoLlegada.getCoordenadaX(), estadoLlegada.getCoordenadaY(), 0);
+                    }
+                });
+                
+            }
+        }
+        return estadosInfo;
+    }
+    
+    public void generarFlecha(Graphics graph, int coordPartidaX, int coordPartidaY, 
+                              int coordLlegaX, int coordLlegadaY, 
+                              String caracterEntrada){
+        graph.drawLine(coordPartidaX, coordPartidaY, coordLlegaX, coordLlegadaY);
     }
     
     public void generarOvalo(Graphics graph, int x, int y, String estado){
@@ -166,7 +199,7 @@ public class VentanaInicial extends javax.swing.JFrame {
 
         FontMetrics fm = graph.getFontMetrics();
         double textWidth = fm.getStringBounds(estado, graph).getWidth();
-        graph.setColor(Color.WHITE);
+        graph.setColor(Color.BLACK);
         graph.drawString(estado, (int) (centerX - textWidth/2),
                            (int) (centerY + fm.getMaxAscent() / 2));
     }
@@ -174,7 +207,6 @@ public class VentanaInicial extends javax.swing.JFrame {
     public HashMap<Boolean, String> validarEstadosIngresados(){
         HashMap<Boolean, String> validador = new HashMap<>();
         List<String> listaEstados = obtenerListaEstados();
-        System.out.println(listaEstados);
         for(int fila = 0; fila <= 3; fila++){
             for (int columna = 1; columna <= 2; columna++) {
                 if (tablaAutomata.getValueAt(fila, columna) != null && !tablaAutomata.getValueAt(fila, columna).equals("")){
