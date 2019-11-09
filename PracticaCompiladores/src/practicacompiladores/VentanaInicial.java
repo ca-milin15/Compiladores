@@ -101,9 +101,6 @@ public class VentanaInicial extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(grafica1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 687, Short.MAX_VALUE)
                 .addContainerGap())
@@ -111,6 +108,10 @@ public class VentanaInicial extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(iniciarProceso)
                 .addGap(321, 321, 321))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(28, 28, 28)
+                .addComponent(grafica1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -145,17 +146,29 @@ public class VentanaInicial extends javax.swing.JFrame {
 
     public void generarGrafica(Graphics graph){
         List<String> estados = obtenerListaEstados();
-        for (int i = 1; i <= estados.size(); i++) {
-            if(i%2 == 0){
-                graph.drawOval(i * 10, i * 20, 40, 40);
-                graph.setColor(Color.red);
-                graph.drawString("a", 35, 35);
-            } else {
-                graph.drawOval(i * 20 , i* 10, 10, 10);
-                graph.setColor(Color.red);
-                graph.drawString("a", 35, 35);
-            }
+        int posicionY = 70;
+        for (int i = 0; i <= estados.size(); i+=2) {
+            System.out.println("Posicion Y: " + posicionY);
+            generarOvalo(graph, 25, posicionY, estados.get(i));
+            generarOvalo(graph, 125, posicionY, estados.get(i+1));
+            posicionY = posicionY * 2;
         }
+        
+    }
+    
+    public void generarOvalo(Graphics graph, int x, int y, String estado){
+        int centerX = x, centerY = y;
+        int ovalWidth = 50, ovalHeight = 50;
+
+        graph.setColor(Color.BLUE);
+        graph.drawOval(centerX-ovalWidth/2, centerY-ovalHeight/2,
+                   ovalWidth, ovalHeight);
+
+        FontMetrics fm = graph.getFontMetrics();
+        double textWidth = fm.getStringBounds(estado, graph).getWidth();
+        graph.setColor(Color.WHITE);
+        graph.drawString(estado, (int) (centerX - textWidth/2),
+                           (int) (centerY + fm.getMaxAscent() / 2));
     }
     
     public HashMap<Boolean, String> validarEstadosIngresados(){
