@@ -14,6 +14,9 @@ public class InfoEstado {
     private int coordenadaX;
     private int coordenadaY;
 
+    public InfoEstado() {
+    }
+
     public InfoEstado(int posicionX, int posicionY, String estado) {
         this.estado = estado;
         this.coordenadaX = posicionX;

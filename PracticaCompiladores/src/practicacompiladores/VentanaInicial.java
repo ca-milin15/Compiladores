@@ -13,6 +13,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import javax.swing.JFrame;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 import practicacompiladores.bean.InfoEstado;
 
 
@@ -158,11 +161,11 @@ public class VentanaInicial extends javax.swing.JFrame {
         int posicionY = 70;
         //Se pintan los estados por orden ingresados y por par
         for (int i = 0; i < estados.size(); i+=2) {
-            generarOvalo(graph, 25, posicionY, estados.get(i));
+            generarOvalo(graph, 25, posicionY, 50, 50, estados.get(i), true);
             /* Se registran las coordenadas de cada estado para saber su 
                ubicacion en la grafica */
             estadosInfo.add(new InfoEstado(25, posicionY, estados.get(i)));
-            generarOvalo(graph, 125, posicionY, estados.get(i+1));
+            generarOvalo(graph, 125, posicionY, 50, 50, estados.get(i+1), true);
             estadosInfo.add(new InfoEstado(125, posicionY, estados.get(i+1)));
             posicionY = posicionY * 2;
         }
@@ -170,30 +173,59 @@ public class VentanaInicial extends javax.swing.JFrame {
            las transiciones */
         for(int fila = 0; fila <= 3; fila++){
             for (int columna = 1; columna <= 2; columna++) {
+                String estadoPartida = tablaAutomata.getValueAt(fila, 0).toString();
                 String estadoIngresado = tablaAutomata.getValueAt(fila, columna).toString();
-                System.out.println(tablaAutomata.getValueAt(fila, columna));
-                estadosInfo.forEach(estadoLlegada -> {
-                    if(estadoLlegada.getEstado().equals(estadoIngresado)){
-                        generarFlecha(graph, 0, 0, estadoLlegada.getCoordenadaX(), estadoLlegada.getCoordenadaY(), 0);
-                    }
-                });
+                String caracterEntrada = obtenerCaracterEntrada(columna);
+                System.out.println("Estado partida:"
+                                    .concat(estadoPartida)
+                                    .concat(" Caracter de entrada: ")
+                                    .concat(caracterEntrada)
+                                    .concat(" Estado ingresado: ")
+                                    .concat(estadoIngresado));
+                InfoEstado infoEstadoPartida = obtenerInfoEstado(estadosInfo, estadoPartida);
+                InfoEstado infoEstadoIngresado = obtenerInfoEstado(estadosInfo, estadoIngresado);
+                generarFlecha(graph, 
+                              infoEstadoPartida.getCoordenadaX(), infoEstadoPartida.getCoordenadaY(), 
+                              infoEstadoIngresado.getCoordenadaX(), infoEstadoIngresado.getCoordenadaY(), 
+                              caracterEntrada);
                 
             }
         }
         return estadosInfo;
     }
     
+    private String obtenerCaracterEntrada(int columna) {
+        JTableHeader titulos = tablaAutomata.getTableHeader();
+        TableColumnModel columnas = titulos.getColumnModel();
+        return  columnas.getColumn(columna).getHeaderValue().toString();
+    }
+    
+    private InfoEstado obtenerInfoEstado(List<InfoEstado> estadosInfo, String estadoIngresado) {
+        InfoEstado infoEstado = new InfoEstado();
+        estadosInfo.stream().filter(estadoInfo -> estadoInfo.getEstado().equals(estadoIngresado))
+                            .forEach(estadoInfo -> {
+            infoEstado.setEstado(estadoInfo.getEstado());
+            infoEstado.setCoordenadaY(estadoInfo.getCoordenadaY());
+            infoEstado.setCoordenadaX(estadoInfo.getCoordenadaX());
+        });
+        return infoEstado;
+    }
+    
     public void generarFlecha(Graphics graph, int coordPartidaX, int coordPartidaY, 
                               int coordLlegaX, int coordLlegadaY, 
                               String caracterEntrada){
-        graph.drawLine(coordPartidaX, coordPartidaY, coordLlegaX, coordLlegadaY);
+        graph.drawLine(coordPartidaX-5, coordPartidaY-5, coordLlegaX-25, coordLlegadaY-25);
+        generarOvalo(graph, coordLlegaX-18, coordLlegadaY-18, 20, 20, caracterEntrada, false);
     }
     
-    public void generarOvalo(Graphics graph, int x, int y, String estado){
+    public void generarOvalo(Graphics graph, int x, int y, int ovalWidth, int ovalHeight, String estado, boolean isEstado){
         int centerX = x, centerY = y;
-        int ovalWidth = 50, ovalHeight = 50;
 
-        graph.setColor(Color.BLUE);
+        if(isEstado){
+            graph.setColor(Color.BLACK);
+        } else {
+            graph.setColor(Color.BLUE);
+        }
         graph.drawOval(centerX-ovalWidth/2, centerY-ovalHeight/2,
                    ovalWidth, ovalHeight);
 
@@ -301,4 +333,6 @@ public class VentanaInicial extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tablaAutomata;
     // End of variables declaration//GEN-END:variables
+
+
 }
