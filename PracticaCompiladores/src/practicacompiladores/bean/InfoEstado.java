@@ -13,14 +13,25 @@ public class InfoEstado {
     private String estado;
     private int coordenadaX;
     private int coordenadaY;
+    private int coordenadaXsalida;
+    private int coordenadaYsalida;
+    private int coordenadaXentrada;
+    private int coordenadaYentrada;
 
     public InfoEstado() {
     }
 
-    public InfoEstado(int posicionX, int posicionY, String estado) {
-        this.estado = estado;
+    public InfoEstado(int posicionX, int posicionY, 
+                        String estado, 
+                        int coordenadaXsalida, int coordenadaYsalida, 
+                        int coordenadaXentrada, int coordenadaYentrada) {
         this.coordenadaX = posicionX;
         this.coordenadaY = posicionY;
+        this.estado = estado;
+        this.coordenadaXsalida = coordenadaXsalida;
+        this.coordenadaYsalida = coordenadaYsalida;
+        this.coordenadaXentrada = coordenadaXentrada;
+        this.coordenadaYentrada = coordenadaYentrada;
     }
 
     public String getEstado() {
@@ -45,6 +56,38 @@ public class InfoEstado {
 
     public void setCoordenadaY(int coordenadaY) {
         this.coordenadaY = coordenadaY;
+    }
+
+    public int getCoordenadaXsalida() {
+        return coordenadaXsalida;
+    }
+
+    public int getCoordenadaYsalida() {
+        return coordenadaYsalida;
+    }
+
+    public int getCoordenadaXentrada() {
+        return coordenadaXentrada;
+    }
+
+    public int getCoordenadaYentrada() {
+        return coordenadaYentrada;
+    }
+
+    public void setCoordenadaXsalida(int coordenadaXsalida) {
+        this.coordenadaXsalida = coordenadaXsalida;
+    }
+
+    public void setCoordenadaYsalida(int coordenadaYsalida) {
+        this.coordenadaYsalida = coordenadaYsalida;
+    }
+
+    public void setCoordenadaXentrada(int coordenadaXentrada) {
+        this.coordenadaXentrada = coordenadaXentrada;
+    }
+
+    public void setCoordenadaYentrada(int coordenadaYentrada) {
+        this.coordenadaYentrada = coordenadaYentrada;
     }
     
     

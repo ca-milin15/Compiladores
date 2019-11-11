@@ -46,6 +46,7 @@ public class VentanaInicial extends javax.swing.JFrame {
         tablaAutomata = new javax.swing.JTable();
         iniciarProceso = new javax.swing.JButton();
         grafica1 = new javax.swing.JPanel();
+        lblNotificacion = new javax.swing.JLabel();
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -104,10 +105,6 @@ public class VentanaInicial extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 687, Short.MAX_VALUE)
-                .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(iniciarProceso)
@@ -116,23 +113,36 @@ public class VentanaInicial extends javax.swing.JFrame {
                 .addGap(28, 28, 28)
                 .addComponent(grafica1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(12, 12, 12)
+                        .addComponent(lblNotificacion, javax.swing.GroupLayout.PREFERRED_SIZE, 613, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 687, Short.MAX_VALUE)
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(22, 22, 22)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(26, 26, 26)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblNotificacion)
+                .addGap(5, 5, 5)
                 .addComponent(iniciarProceso)
                 .addGap(18, 18, 18)
                 .addComponent(grafica1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(64, Short.MAX_VALUE))
+                .addContainerGap(79, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void iniciarProcesoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_iniciarProcesoActionPerformed
+        lblNotificacion.setText("");
         HashMap<Boolean, String> validadorEstados = validarEstadosIngresados();
         if(validadorEstados.containsKey(true)){
             if(validarCamposTablaAcepRech()){
@@ -146,52 +156,91 @@ public class VentanaInicial extends javax.swing.JFrame {
                                                                              .concat(String.valueOf(estadoGenerado.getCoordenadaY()))));
                     });
                 } else {
-                    System.out.println("Este automata no es NO determinista");
+                    grafica1.update(grafica1.getGraphics());
+                    lblNotificacion.setText("Este automata no es NO determinista");
                 }
             }
         }else {
-            System.out.println(validadorEstados.values());
+            lblNotificacion.setText(validadorEstados.values().toString());
         }
     }//GEN-LAST:event_iniciarProcesoActionPerformed
 
-    public List<InfoEstado> generarGrafica(Graphics graph){
+    public List<InfoEstado> generarGrafica(Graphics graph){                                          
+        grafica1.update(graph);
+        //Se define ubicacion en eje X de los ovalos(izquierdo y derecho)
+        int posicionOvaloEnEjeXColumnaDerecha = 195;
+        int posicionOvaloEnEjeXColumnaIzquierda = 25;
+        int posicionEntradaEnEjeXColumnaDerecha = posicionOvaloEnEjeXColumnaDerecha - (posicionOvaloEnEjeXColumnaDerecha / 7);
+        int posicionEntradaEnEjeXColumnaIzquierda = posicionOvaloEnEjeXColumnaIzquierda*2;
         //Se obtiene la lista de estados
         List<String> estados = obtenerListaEstados();
         List<InfoEstado> estadosInfo = new ArrayList<>();
-        int posicionY = 70;
+        int posicionY = 90; //Distancia entre filas de ovalos
         //Se pintan los estados por orden ingresados y por par
         for (int i = 0; i < estados.size(); i+=2) {
-            generarOvalo(graph, 25, posicionY, 50, 50, estados.get(i), true);
             /* Se registran las coordenadas de cada estado para saber su 
                ubicacion en la grafica */
-            estadosInfo.add(new InfoEstado(25, posicionY, estados.get(i)));
-            generarOvalo(graph, 125, posicionY, 50, 50, estados.get(i+1), true);
-            estadosInfo.add(new InfoEstado(125, posicionY, estados.get(i+1)));
+            generarOvalo(graph, posicionOvaloEnEjeXColumnaIzquierda, posicionY, 50, 50, estados.get(i), true);
+            estadosInfo.add(new InfoEstado( posicionOvaloEnEjeXColumnaIzquierda, posicionY, // Ubicacion del ovalo izquierdo
+                                            estados.get(i),
+                                            posicionEntradaEnEjeXColumnaIzquierda, posicionY+10, // Ubicacion del punto de salida
+                                            73, posicionY+10));// Ubicacion del punto de entrada
+            generarOvalo(graph, posicionOvaloEnEjeXColumnaDerecha, posicionY, 50, 50, estados.get(i+1), true);
+            estadosInfo.add(new InfoEstado( posicionOvaloEnEjeXColumnaDerecha, posicionY, // Ubicacion del ovalo derecho
+                                            estados.get(i+1), 
+                                            posicionEntradaEnEjeXColumnaDerecha, posicionY+10,  // Ubicacion del punto de salida
+                                            posicionOvaloEnEjeXColumnaDerecha, posicionY+5));// Ubicacion del punto de entrada
             posicionY = posicionY * 2;
         }
         /* Se empieza a recorrer la tabla de estados ingresados para trazar 
            las transiciones */
         for(int fila = 0; fila <= 3; fila++){
             for (int columna = 1; columna <= 2; columna++) {
-                String estadoPartida = tablaAutomata.getValueAt(fila, 0).toString();
-                String estadoIngresado = tablaAutomata.getValueAt(fila, columna).toString();
                 String caracterEntrada = obtenerCaracterEntrada(columna);
-                System.out.println("Estado partida:"
-                                    .concat(estadoPartida)
-                                    .concat(" Caracter de entrada: ")
-                                    .concat(caracterEntrada)
-                                    .concat(" Estado ingresado: ")
-                                    .concat(estadoIngresado));
+                String estadoPartida = tablaAutomata.getValueAt(fila, 0).toString();
                 InfoEstado infoEstadoPartida = obtenerInfoEstado(estadosInfo, estadoPartida);
-                InfoEstado infoEstadoIngresado = obtenerInfoEstado(estadosInfo, estadoIngresado);
-                generarFlecha(graph, 
-                              infoEstadoPartida.getCoordenadaX(), infoEstadoPartida.getCoordenadaY(), 
-                              infoEstadoIngresado.getCoordenadaX(), infoEstadoIngresado.getCoordenadaY(), 
-                              caracterEntrada);
-                
+                String estadoIngresado = tablaAutomata.getValueAt(fila, columna).toString();
+                String[] estadosSeparadosPorComa = estadoIngresado.split(",");
+                if(estadosSeparadosPorComa.length > 1){
+                    for(String estadoSeparadoPorComa: estadosSeparadosPorComa){
+                        System.out.println("Estado partida:"
+                                            .concat(estadoPartida)
+                                            .concat(" Caracter de entrada: ")
+                                            .concat(caracterEntrada)
+                                            .concat(" Estado ingresado: ")
+                                            .concat(estadoSeparadoPorComa));
+                        InfoEstado infoEstadoIngresado = obtenerInfoEstado(estadosInfo, estadoSeparadoPorComa);
+                        generarFlecha(graph,  infoEstadoPartida, infoEstadoIngresado, caracterEntrada);
+                    }
+                } else {
+                    System.out.println("Estado partida:"
+                                        .concat(estadoPartida)
+                                        .concat(" Caracter de entrada: ")
+                                        .concat(caracterEntrada)
+                                        .concat(" Estado ingresado: ")
+                                        .concat(estadoIngresado));
+                    InfoEstado infoEstadoIngresado = obtenerInfoEstado(estadosInfo, estadoIngresado);
+                    generarFlecha(graph,  infoEstadoPartida, infoEstadoIngresado, caracterEntrada);
+                }
             }
         }
         return estadosInfo;
+    }
+    
+    public void generarFlecha(Graphics graph, InfoEstado infoEstadoPartida, InfoEstado infoEstadoIngresado,
+                              String caracterEntrada){
+        System.out.println(
+                            "Estado:" + infoEstadoIngresado.getEstado()+
+                            "\n Coordenada X:" + infoEstadoIngresado.getCoordenadaX()+
+                            "\n Coordenada Y:" + infoEstadoIngresado.getCoordenadaY() +
+                            "\n Coordenada X salida:" + infoEstadoIngresado.getCoordenadaXsalida()+
+                            "\n Coordenada Y salida:" + infoEstadoIngresado.getCoordenadaYsalida()+
+                            "\n Coordenada X entrada:" + infoEstadoIngresado.getCoordenadaXentrada() + 
+                            "\n Coordenada Y entrada:" + infoEstadoIngresado.getCoordenadaYentrada());
+        graph.drawLine(infoEstadoPartida.getCoordenadaXsalida(), infoEstadoPartida.getCoordenadaYsalida(), 
+                        infoEstadoIngresado.getCoordenadaXentrada()-25, infoEstadoIngresado.getCoordenadaYentrada()-25);
+        generarOvalo(graph, infoEstadoIngresado.getCoordenadaXentrada()-18, infoEstadoIngresado.getCoordenadaYentrada()-18, 
+                     20, 20, caracterEntrada, false);
     }
     
     private String obtenerCaracterEntrada(int columna) {
@@ -207,15 +256,12 @@ public class VentanaInicial extends javax.swing.JFrame {
             infoEstado.setEstado(estadoInfo.getEstado());
             infoEstado.setCoordenadaY(estadoInfo.getCoordenadaY());
             infoEstado.setCoordenadaX(estadoInfo.getCoordenadaX());
+            infoEstado.setCoordenadaXentrada(estadoInfo.getCoordenadaXentrada());
+            infoEstado.setCoordenadaYentrada(estadoInfo.getCoordenadaYentrada());
+            infoEstado.setCoordenadaXsalida(estadoInfo.getCoordenadaXsalida());
+            infoEstado.setCoordenadaYsalida(estadoInfo.getCoordenadaYsalida());
         });
         return infoEstado;
-    }
-    
-    public void generarFlecha(Graphics graph, int coordPartidaX, int coordPartidaY, 
-                              int coordLlegaX, int coordLlegadaY, 
-                              String caracterEntrada){
-        graph.drawLine(coordPartidaX-5, coordPartidaY-5, coordLlegaX-25, coordLlegadaY-25);
-        generarOvalo(graph, coordLlegaX-18, coordLlegadaY-18, 20, 20, caracterEntrada, false);
     }
     
     public void generarOvalo(Graphics graph, int x, int y, int ovalWidth, int ovalHeight, String estado, boolean isEstado){
@@ -283,7 +329,7 @@ public class VentanaInicial extends javax.swing.JFrame {
         for(int fila = 0; fila <= 3; fila++){
             for (int columna = 3; columna <= 3; columna++) {
                 if (tablaAutomata.getValueAt(fila, columna) == null || tablaAutomata.getValueAt(fila, columna).equals("")){
-                    System.out.println("En la fila: " + (fila + 1) + ", con la columna: " + (columna + 1) + " esta vacio");
+                    lblNotificacion.setText("En la fila: " + (fila + 1) + ", con la columna: " + (columna + 1) + " esta vacio");
                     return false;
                 }
             }
@@ -331,6 +377,7 @@ public class VentanaInicial extends javax.swing.JFrame {
     private javax.swing.JButton iniciarProceso;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblNotificacion;
     private javax.swing.JTable tablaAutomata;
     // End of variables declaration//GEN-END:variables
 
