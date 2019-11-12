@@ -10,6 +10,7 @@ import java.awt.FontMetrics;
 import java.awt.Graphics;
 import static java.time.Clock.system;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import javax.swing.JFrame;
@@ -47,6 +48,9 @@ public class VentanaInicial extends javax.swing.JFrame {
         iniciarProceso = new javax.swing.JButton();
         grafica1 = new javax.swing.JPanel();
         lblNotificacion = new javax.swing.JLabel();
+        jScrollBar1 = new javax.swing.JScrollBar();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tablaAutomataDeterministico = new javax.swing.JTable();
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -94,53 +98,86 @@ public class VentanaInicial extends javax.swing.JFrame {
         grafica1.setLayout(grafica1Layout);
         grafica1Layout.setHorizontalGroup(
             grafica1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 628, Short.MAX_VALUE)
         );
         grafica1Layout.setVerticalGroup(
             grafica1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 221, Short.MAX_VALUE)
         );
 
+        tablaAutomataDeterministico.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane2.setViewportView(tablaAutomataDeterministico);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(iniciarProceso)
-                .addGap(321, 321, 321))
             .addGroup(layout.createSequentialGroup()
-                .addGap(28, 28, 28)
-                .addComponent(grafica1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(12, 12, 12)
-                        .addComponent(lblNotificacion, javax.swing.GroupLayout.PREFERRED_SIZE, 613, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(iniciarProceso)
+                        .addGap(292, 292, 292))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 687, Short.MAX_VALUE)
-                        .addContainerGap())))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 628, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGap(24, 24, 24)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jScrollPane1)
+                                        .addComponent(lblNotificacion, javax.swing.GroupLayout.PREFERRED_SIZE, 613, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGap(28, 28, 28)
+                                    .addComponent(grafica1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)))
+                .addComponent(jScrollBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(22, 22, 22)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblNotificacion)
-                .addGap(5, 5, 5)
-                .addComponent(iniciarProceso)
-                .addGap(18, 18, 18)
-                .addComponent(grafica1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(79, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblNotificacion)
+                        .addGap(5, 5, 5)
+                        .addComponent(iniciarProceso)
+                        .addGap(18, 18, 18)
+                        .addComponent(grafica1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 305, Short.MAX_VALUE))
+                    .addComponent(jScrollBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    int cantidadEstadosIniciales = 4; //Estados ingresados al inicio del proceso. Desarrollo de Puerta
+    int cantidadCaracteresEntrada = 3; //Esto es la suma de dos columnas estaticas y la cantidad de caracteres de entrada
+    int ubicacionInicialPorFila = 1;
+    /* La fila posicion 0 ya ha sido asignada y fue asignada por defecto. 
+       La reorganizacion del automata toma la primera fila del automata original
+       Esta variable es usada en la etapa de reorganziacion de los estados
+       para convertir el automata a deterministico. */
+    int ubicacionInicialPorColumna = 1;
+    /* La columna posicion 0 siempre es la misma(Estados), es decir, es estática, por lo tanto, 
+    se empeiza a contar a partir de la 1*/
+    
     private void iniciarProcesoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_iniciarProcesoActionPerformed
         lblNotificacion.setText("");
         HashMap<Boolean, String> validadorEstados = validarEstadosIngresados();
@@ -159,12 +196,103 @@ public class VentanaInicial extends javax.swing.JFrame {
                     grafica1.update(grafica1.getGraphics());
                     lblNotificacion.setText("Este automata no es NO determinista");
                 }
+                convertirDeNoDeterministicoADeterministico();
             }
         }else {
             lblNotificacion.setText(validadorEstados.values().toString());
         }
     }//GEN-LAST:event_iniciarProcesoActionPerformed
 
+    public void convertirDeNoDeterministicoADeterministico(){
+        List<String> nuevosEstadosDeterminista = obtenerNuevaListaEstadosDeterministicos();
+        
+    }
+    
+    public List<String> obtenerNuevaListaEstadosDeterministicos(){
+        
+        String[][] tablaAutomataDeterministicoCalculo = new String[cantidadEstadosIniciales][cantidadCaracteresEntrada]; // TODO afecta el desarrollo de puerta
+        tablaAutomataDeterministicoCalculo[0][0] = "";
+        List<String> auxNuevosEstadosDeterminista = new ArrayList<>();
+        for(int fila = 0; fila <= 0; fila++){
+            for (int columna = 1; columna <= 2; columna++) {
+                if(tablaAutomataDeterministicoCalculo[0][0].equals("")){
+                    String estadoPartida = tablaAutomata.getValueAt(fila, 0).toString();
+                    tablaAutomataDeterministicoCalculo[0][0] = estadoPartida;
+                    auxNuevosEstadosDeterminista.add(estadoPartida);
+                }
+                
+                String estadoIngresado = tablaAutomata.getValueAt(fila, columna).toString();
+                String[] estadosSeparadosPorComa = estadoIngresado.split(",");
+                if(estadosSeparadosPorComa.length > 1){
+                    estadoIngresado = String.join("", estadosSeparadosPorComa);
+                }
+                if(!auxNuevosEstadosDeterminista.contains(estadoIngresado)){
+                    //tablaAutomataDeterministicoCalculo[fila+1][0] = estadoIngresado;
+                    auxNuevosEstadosDeterminista.add(estadoIngresado);
+                }
+                tablaAutomataDeterministicoCalculo[fila][columna] = estadoIngresado;
+            }
+        }
+        auxNuevosEstadosDeterminista.forEach(auxNuevoEstado -> {
+            if(!validarEstadoEnMatrizDeterministico(tablaAutomataDeterministicoCalculo, auxNuevoEstado)){
+                tablaAutomataDeterministicoCalculo[ubicacionInicialPorFila][0] = auxNuevoEstado;
+                List<String> valoresRecuperadosPorEstado = recuperarValoresIngresadosDelAutomataIncial(auxNuevoEstado);
+                valoresRecuperadosPorEstado.forEach(valorRecuperado -> {
+                    String[] estadosSeparadosPorComa = valorRecuperado.split(",");
+                    if(estadosSeparadosPorComa.length > 1){
+                        valorRecuperado = String.join("", estadosSeparadosPorComa);
+                    }
+                    if(!auxNuevosEstadosDeterminista.contains(valorRecuperado)){
+                        tablaAutomataDeterministicoCalculo[ubicacionInicialPorFila+1][0] = valorRecuperado;
+                        auxNuevosEstadosDeterminista.add(valorRecuperado); // posiblemente error
+                    }
+                    tablaAutomataDeterministicoCalculo[ubicacionInicialPorFila][ubicacionInicialPorColumna] = valorRecuperado;
+                    ubicacionInicialPorColumna++; //Ubica los valores consecutivamente, de acuerdo a como los recuperó
+                });
+                ubicacionInicialPorFila ++;
+            }
+        });
+        auxNuevosEstadosDeterminista.forEach(x -> {
+            System.out.print(x + ", ");
+        });
+        System.out.print("-------");
+        String resul = "";
+        for(int filaA = 0; filaA <= cantidadEstadosIniciales - 1; filaA++){
+            resul= resul + "\n";
+            for (int columnaA = 0; columnaA < cantidadCaracteresEntrada; columnaA++) {
+                resul = resul + tablaAutomataDeterministicoCalculo[filaA][columnaA] + ", ";
+            }
+        }
+        System.out.println(resul);
+        return auxNuevosEstadosDeterminista;
+    }
+    
+    public List<String> recuperarValoresIngresadosDelAutomataIncial(String estadoReferencia){
+        List<String> valoresRecuperadosPorEstado = new ArrayList<>();
+        for(int fila = 0; fila < cantidadEstadosIniciales -1; fila++){
+            String estadoActual = tablaAutomata.getValueAt(fila,0).toString();
+            if(estadoActual.equals(estadoReferencia)){
+                for(int columa = 1; columa < cantidadCaracteresEntrada; columa++){
+                    System.out.println(fila + " - " + columa);
+                    System.out.println(tablaAutomata.getValueAt(fila,columa));
+                    valoresRecuperadosPorEstado.add(tablaAutomata.getValueAt(fila,columa).toString());
+                }
+                return valoresRecuperadosPorEstado;
+            }
+        }
+        return valoresRecuperadosPorEstado;
+    }
+    
+    public Boolean validarEstadoEnMatrizDeterministico(String[][] tablaAutomataDeterministicoCalculo, String estado){
+        for(int fila = 0; fila < cantidadEstadosIniciales; fila++){
+            String estadoActual = tablaAutomataDeterministicoCalculo[fila][0];
+            if(estadoActual != null && estadoActual.equals(estado)){
+                return true;
+            }
+        }
+        return false;
+    }
+    
     public List<InfoEstado> generarGrafica(Graphics graph){                                          
         grafica1.update(graph);
         //Se define ubicacion en eje X de los ovalos(izquierdo y derecho)
@@ -376,9 +504,12 @@ public class VentanaInicial extends javax.swing.JFrame {
     private javax.swing.JPanel grafica1;
     private javax.swing.JButton iniciarProceso;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollBar jScrollBar1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lblNotificacion;
     private javax.swing.JTable tablaAutomata;
+    private javax.swing.JTable tablaAutomataDeterministico;
     // End of variables declaration//GEN-END:variables
 
 
